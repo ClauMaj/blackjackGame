@@ -24,11 +24,11 @@ var buttonHit = document.querySelector('#buttonHit');
 var buttonAgain = document.querySelector('#buttonAgain');
 var topText = document.querySelector('#topText');
 
-//assign some initial values
+//assign initial values to tracking variables
 var playerPoints;  // node
 var dealerPoints;  // node
 var bottomText;  // node
-var sizeOfDeck = 0;
+var sizeOfDeck = 0; // remember nr.of decks for case when all cards are used
 var dealerTotal = 0;
 var playerTotal = 0;
 var dealerNrOfAces = 0;
@@ -38,6 +38,9 @@ var playerAces = false;
 var blackJackConfirm = false;
 var cardCalcReturn = [];
 
+
+// enable\disable functions for main buttons
+// add/remove enable\disable styles
 function disableStand(){
     buttonStand.disabled = true;
     buttonStand.innerHTML = `<p>Stand</p> <img style='margin-left:10px;' height = 30%; width=auto; src='images/not.png'>`;
@@ -70,7 +73,7 @@ disableHit();
 disableAgain();
 
 
-// shuffle function
+// shuffle deck function
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -81,7 +84,9 @@ function shuffleArray(array) {
     return array;
 }
 
-//crete deck function(n=nr of decks)+ shuffle 
+//createDeck => cretes a deck(n=nr of decks) + shuffle
+//each card is an object that is placed in the deck array
+//each card will be create n times(based on player selection for nr. of decks) 
 function createDeck(suitsArr,rankArr,n){
     deck = [];
     let card = '';
@@ -103,11 +108,10 @@ function createDeck(suitsArr,rankArr,n){
     }
     //shuffle deck after created
     shuffleArray(deck);
-    return deck;
 }
 
 
-// create the deck depending on nr of decks picked and execute game start sequence
+// create the deck depending on nr of decks picked and call game start sequence
 function start(pick,decksText){
     if (pick === "startButton1"){
         sizeOfDeck = 1;
@@ -133,7 +137,9 @@ function createText(name,text,idName) {
     return cont;
 }
 
-//at start remove a few elements and create new ones
+//startSequence => remove the presentation elements and create new ones
+//enable play buttons and draw 2 cards for player and dealer
+// this fnct is called after player selects the nr. of decks
 function startSequence(decksText){
     logo.remove();
     welcome.remove();
@@ -161,6 +167,15 @@ function startSequence(decksText){
     }
 }
 
+
+//cardCalc => calculates the new Total after player/dealer draws a card
+//  aces can be either 1 or 11 depending on case total <,=,>  21
+//  for dealer and player - if the ace(11) goes over 21 it will transform to ace(1)
+//  for dealer - if the ace(11) add up to >= 17 but <= 21 it will count as 11
+//  nrOfAces keeps track of the aces(11) in the deck that have not been transformed to ace(1)
+//  if aces = true - means there was an ace drawn at some point and this affects points display and future calc in corelation with nrOfAces
+//returns the new Total, nrOfAces and aces to keep track of the variables
+// this fnct is called from drawPlayerCard() and drawDealerCard().
 function cardCalc(value,total,element,nrOfAces,aces){
     if (value === 11) {
         nrOfAces +=1;
@@ -204,7 +219,7 @@ function cardCalc(value,total,element,nrOfAces,aces){
         }
         else if ((total+value) > 21){
             total += value-10;
-            nrOfAces -=1; //problem here with returning this
+            nrOfAces -=1;
             if (nrOfAces > 0){
                 element.innerText = `${total-10} / ${total}`;
                 }
@@ -219,6 +234,10 @@ function cardCalc(value,total,element,nrOfAces,aces){
     return cardCalcReturn;
 }
 
+
+//drawPlayerCard => pulls a card from the deck and renders is on the screen
+// call cardCalc function to process the value drawn
+// this fnct is called when player presses the Hit button and 2 times during the startSequence()
 function drawPlayerCard(){
     if(deck.length < 1){
         createDeck(suitsArr,rankArr,sizeOfDeck);
@@ -237,6 +256,9 @@ function drawPlayerCard(){
     }
 }
 
+//drawDealerCard => pulls a card from the deck and renders is on the screen
+//call cardCalc function to process the value drawn
+//this fnct is called when player presses the Stand button, when playerPoint > 21 and 2 times during the startSequence()
 function drawDealerCard(){
     if(deck.length < 1){
         createDeck(suitsArr,rankArr,sizeOfDeck);
@@ -256,7 +278,8 @@ function drawDealerCard(){
 }
 
 
-// compare on stand or hit(player > 21 points) and assign winner
+// compareStand => compares scores when player hits Stand button, after the dealer has finished drawin cards too
+// this fnct is called when player hits Stand button
 function compareStand(){
     if (dealerTotal <=21){
         if (playerTotal < dealerTotal){
@@ -279,7 +302,10 @@ function compareStand(){
         topText.innerText = "You win!";
     }
 }
-
+// compareHit => function triggers when playerPoints > 21 
+// if playerPoints > 21 dealer wins regardless of his points.
+// (blackjack rule) - if the player > 21 and daeler > 21 => dealer wins
+// calls drawDealerCard() so dealer round executes even if player lost already
 function compareHit(){
     if (playerTotal>21) {
         messageText.innerText = "Ouch!";
@@ -294,6 +320,30 @@ function compareHit(){
     }
 }
 
+// again => is a new game sequence
+// reset tracking variables
+// reset the screen
+// draw 2 cards for player and dealer
+function again(){
+    dealerTotal = 0;
+    playerTotal = 0;
+    dealerNrOfAces = 0;
+    playerNrOfAces = 0;
+    dealerAces = false;
+    playerAces = false;
+    blackJackConfirm = false;
+    cardCalcReturn = [];
+    messageText.innerText = "Good Luck!";
+    topText.innerText = "";
+    playerCards.innerHTML = '';
+    dealerCards.innerHTML = '';
+    for (let a=0;a<2;a++){
+        drawPlayerCard();
+        drawDealerCard();
+    }
+    enableStand();
+    enableHit();
+}
 //listener for loading the game and first selections
 messageText.addEventListener('click',function(e){
     let select = e.target.id;
@@ -310,7 +360,11 @@ restart.addEventListener('click',function(e){
     location.reload();
     }
 });
+
 //main listener for stand, hit and playAgain buttons
+// if Stand is pressed call drawDealerCard() untill dealer >=17
+// if Hit is pressed check if the score is 21 and ask for confirmation then drawPlayerCard()
+// if Play again is pressed => again() is called and a new game begins
 mainButtons.addEventListener('click',function(e){
     console.log(e);
     let choice = e.target.id;
@@ -340,26 +394,8 @@ mainButtons.addEventListener('click',function(e){
     }
 });
 
-function again(){
-    dealerTotal = 0;
-    playerTotal = 0;
-    dealerNrOfAces = 0;
-    playerNrOfAces = 0;
-    dealerAces = false;
-    playerAces = false;
-    blackJackConfirm = false;
-    cardCalcReturn = [];
-    messageText.innerText = "Good Luck!";
-    topText.innerText = "";
-    playerCards.innerHTML = '';
-    dealerCards.innerHTML = '';
-    for (let a=0;a<2;a++){
-        drawPlayerCard();
-        drawDealerCard();
-    }
-    enableStand();
-    enableHit();
-}
+
+
 
 
 
