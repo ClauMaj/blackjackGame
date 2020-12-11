@@ -2,10 +2,10 @@
 // create deck:
 var suitsArr = ['diamonds', 'clubs', 'hearts', 'spades'];
 var rankArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]; 
-var deck = [];
+var deck = []; // stores the deck after created
 
 
-//select elements
+//select elements from DOM
 var table = document.querySelector('#tableDiv');
 var logo = document.querySelector('#logo');
 var welcome = document.querySelector('#welcome');
@@ -23,6 +23,8 @@ var buttonStand = document.querySelector('#buttonStand');
 var buttonHit = document.querySelector('#buttonHit');
 var buttonAgain = document.querySelector('#buttonAgain');
 var topText = document.querySelector('#topText');
+
+//assign some initial values
 var playerPoints;  // node
 var dealerPoints;  // node
 var bottomText;  // node
@@ -233,14 +235,6 @@ function drawPlayerCard(){
         playerPoints.innerText = playerTotal;
         messageText.innerText = "Blackjack";
     }
-    if (playerTotal > 21){
-        messageText.innerText = "Ouch!";
-        while (dealerTotal < 17){
-            drawDealerCard();
-        }
-        disableHit();
-        disableStand();
-    }
 }
 
 function drawDealerCard(){
@@ -261,6 +255,8 @@ function drawDealerCard(){
     }
 }
 
+
+// compare on stand or hit(player > 21 points) and assign winner
 function compareStand(){
     if (dealerTotal <=21){
         if (playerTotal < dealerTotal){
@@ -285,6 +281,7 @@ function compareStand(){
 
 function compareHit(){
     if (playerTotal>21) {
+        messageText.innerText = "Ouch!";
         disableHit();
         disableStand();
         while (dealerTotal < 17){
