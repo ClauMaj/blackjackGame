@@ -264,6 +264,7 @@ function compareStand(){
             topText.innerText = "Dealer wins!";
         }
         else if (dealerTotal < playerTotal){
+            dealerPoints.innerText = dealerTotal;
             messageText.innerText = "Congratulations!!!";
             topText.innerText = "You win!";
         }
