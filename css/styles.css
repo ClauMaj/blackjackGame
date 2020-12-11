@@ -1,6 +1,7 @@
 
 * {
     margin: 0px;
+    outline: none;
 }
 body{
     position: relative;
@@ -87,6 +88,15 @@ body{
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
     cursor: pointer;
     text-shadow: 2px 2px 5px black;
+    font-size: 1.1vw;
+}
+#buttonHit:disabled {
+    border: 1px groove;
+    border-color: rgb(226, 46, 46);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    text-shadow: 2px 2px 5px black;
+    cursor: not-allowed;
 }
 #buttonStand{
     width: 12%;
@@ -108,7 +118,17 @@ body{
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
     text-shadow: 2px 2px 5px black;
     cursor: pointer;
+    font-size: 1.1vw;
 }
+#buttonStand:disabled {
+    border: 1px groove;
+    border-color: rgb(226, 46, 46);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    text-shadow: 2px 2px 5px black;
+    cursor: not-allowed;
+}
+
 #buttonAgain{
     width: 12%;
     height: 30%;
@@ -129,6 +149,15 @@ body{
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
     text-shadow: 2px 2px 5px black;
     cursor: pointer;
+    font-size: 1.1vw;
+}
+#buttonAgain:disabled {
+    border: 1px groove;
+    border-color: rgb(226, 46, 46);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    text-shadow: 2px 2px 5px black;
+    cursor: not-allowed;
 }
 #buttonRestart{
     width: 12%;
@@ -161,10 +190,22 @@ body{
     font-size: 1vw;
 }
 #messageText{
-    color: #6a040f;
+    color: rgb(204, 235, 67);
     font-weight: bold;
     position: absolute;
     top: 36%;
+    height: 8%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3vw;
+}
+#topText{
+    color: gold;
+    font-weight: bold;
+    position: absolute;
+    top: 4%;
     height: 8%;
     width: 100%;
     display: flex;
@@ -223,6 +264,7 @@ body{
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
     text-shadow: 2px 2px 5px black;
     cursor: pointer;
+    font-size: 0.9vw;
 }
 #welcome{
     text-align: center;
@@ -236,4 +278,14 @@ body{
 #playerPoints{
     margin-left: 10px;
     color: lightgray;
+}
+#playerPoints{
+    border: 1px solid rgb(3, 87, 17);
+    padding: 1px 5px 1px 5px;
+    box-shadow: 1px 1px 2px black;
+}
+#dealerPoints{
+    border: 1px solid rgb(3, 87, 17);
+    padding: 1px 5px 1px 5px;
+    box-shadow: 1px 1px 2px black;
 }
