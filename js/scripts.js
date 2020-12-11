@@ -26,12 +26,15 @@ var topText = document.querySelector('#topText');
 var playerPoints;  // node
 var dealerPoints;  // node
 var bottomText;  // node
+var sizeOfDeck = 0;
 var dealerTotal = 0;
 var playerTotal = 0;
 var dealerNrOfAces = 0;
 var playerNrOfAces = 0;
 var dealerAces = false;
 var playerAces = false;
+var blackJackConfirm = false;
+var cardCalcReturn = [];
 
 function disableStand(){
     buttonStand.disabled = true;
@@ -105,15 +108,18 @@ function createDeck(suitsArr,rankArr,n){
 // create the deck depending on nr of decks picked and execute game start sequence
 function start(pick,decksText){
     if (pick === "startButton1"){
-        createDeck(suitsArr,rankArr,1);
+        sizeOfDeck = 1;
+        createDeck(suitsArr,rankArr,sizeOfDeck);
         startSequence(decksText);
     }
     else if (pick === "startButton2"){
-        createDeck(suitsArr,rankArr,3);
+        sizeOfDeck = 3;
+        createDeck(suitsArr,rankArr,sizeOfDeck);
         startSequence(decksText);
     }
     else if (pick === "startButton3"){
-        createDeck(suitsArr,rankArr,6);
+        sizeOfDeck = 6;
+        createDeck(suitsArr,rankArr,sizeOfDeck);
         startSequence(decksText);
     }
 }
@@ -154,6 +160,9 @@ function startSequence(decksText){
 }
 
 function cardCalc(value,total,element,nrOfAces,aces){
+    if (value === 11) {
+        nrOfAces +=1;
+    }
     if (value != 11 && aces === false){
         total += value;
         element.innerText = total;
@@ -186,6 +195,7 @@ function cardCalc(value,total,element,nrOfAces,aces){
         }
     }
     else if (value === 11){
+        aces = true;
         if ((total+value) <=21) {
             total +=value;
             element.innerText = `${total-10} / ${total}`;
@@ -201,20 +211,24 @@ function cardCalc(value,total,element,nrOfAces,aces){
             }
         }
     }
-    return total;
+    cardCalcReturn.push(total);
+    cardCalcReturn.push(nrOfAces);
+    cardCalcReturn.push(aces);
+    return cardCalcReturn;
 }
 
 function drawPlayerCard(){
-    console.log(playerAces);
-    console.log(playerNrOfAces);
-    console.log(playerTotal);
-    let drawn = deck.pop();
-    if (drawn.value === 11) {
-        playerNrOfAces +=1;
-        playerAces = true;
+    if(deck.length < 1){
+        createDeck(suitsArr,rankArr,sizeOfDeck);
+        messageText.innerText = "A new deck has been created!";
     }
+    let drawn = deck.pop();
     playerCards.innerHTML += `<img class="cardImg" src="${drawn.url}" alt="">`;
-    playerTotal = cardCalc(drawn.value,playerTotal,playerPoints,playerNrOfAces,playerAces);
+    cardCalcReturn = cardCalc(drawn.value,playerTotal,playerPoints,playerNrOfAces,playerAces);
+    playerTotal = cardCalcReturn[0];
+    playerNrOfAces = cardCalcReturn[1];
+    playerAces = cardCalcReturn[2];
+    cardCalcReturn = [];
     if (playerTotal === 21){
         playerPoints.innerText = playerTotal;
         messageText.innerText = "Blackjack";
@@ -227,35 +241,28 @@ function drawPlayerCard(){
         disableHit();
         disableStand();
     }
-    console.log(playerTotal);
 }
 
 function drawDealerCard(){
-    let dDrawn = deck.pop();
-    if (dDrawn.value === 11) {
-        dealerNrOfAces +=1;
-        dealerAces = true;
+    if(deck.length < 1){
+        createDeck(suitsArr,rankArr,sizeOfDeck);
+        messageText.innerText = "A new deck has been created!";
     }
+    let dDrawn = deck.pop();
     dealerCards.innerHTML += `<img class="cardImg" src="${dDrawn.url}" alt="">`;
-    dealerTotal = cardCalc(dDrawn.value,dealerTotal,dealerPoints,dealerNrOfAces,dealerAces);
+    cardCalcReturn = cardCalc(dDrawn.value,dealerTotal,dealerPoints,dealerNrOfAces,dealerAces);
+    dealerTotal = cardCalcReturn[0];
+    dealerNrOfAces = cardCalcReturn[1];
+    dealerAces = cardCalcReturn[2];
+    cardCalcReturn = [];
     if (dealerTotal === 21){
         dealerPoints.innerText = dealerTotal;
         messageText.innerText = "Dealer has Blackjack";
     }
 }
 
-function compare(){
-    //set winner here
-    if (dealerTotal > 21){
-        messageText.innerText = "Congratulations!!!";
-        topText.innerText = "You win!";
-    }
-    else if (dealerTotal === playerTotal){
-        dealerPoints.innerText = dealerTotal; 
-        messageText.innerText = "Draw!!!";
-        topText.innerText = "Draw!";
-    }
-    if (playerTotal <= 21 && dealerTotal <=21){
+function compareStand(){
+    if (dealerTotal <=21){
         if (playerTotal < dealerTotal){
             dealerPoints.innerText = dealerTotal; 
             topText.innerText = "Dealer wins!";
@@ -264,12 +271,29 @@ function compare(){
             messageText.innerText = "Congratulations!!!";
             topText.innerText = "You win!";
         }
+        else if (dealerTotal === playerTotal){
+            dealerPoints.innerText = dealerTotal; 
+            messageText.innerText = "Draw!!!";
+            topText.innerText = "Draw!";
+        }
     }
-    if (playerTotal > 21 && dealerTotal > 21){
-        dealerPoints.innerText = dealerTotal; 
-        topText.innerText = "Dealer wins!";
+    if (dealerTotal > 21){
+        messageText.innerText = "Congratulations!!!";
+        topText.innerText = "You win!";
     }
+}
 
+function compareHit(){
+    if (playerTotal>21) {
+        disableHit();
+        disableStand();
+        while (dealerTotal < 17){
+            drawDealerCard();
+            }
+        dealerPoints.innerText = dealerTotal;
+        topText.innerText = "Dealer wins!";    
+        enableAgain();
+    }
 }
 
 //listener for loading the game and first selections
@@ -293,32 +317,25 @@ mainButtons.addEventListener('click',function(e){
     console.log(e);
     let choice = e.target.id;
     if (choice === "buttonStand"){
+        playerPoints.innerText = playerTotal;
         disableHit();
         disableStand();
         disableAgain();
         while (dealerTotal < 17){
         drawDealerCard();
         }
-        if (dealerTotal < playerTotal && playerTotal < 21){
-            while (dealerTotal < 21){
-                drawDealerCard();
-            }
-        }
-        compare();
+        compareStand();
         enableAgain();
     }
     else if (choice === "buttonHit"){
-        if (playerTotal === 21){
+        if (playerTotal === 21 && blackJackConfirm ===false){
             messageText.innerText = "Blackjack! Are you sure you want to draw another card?";
+            blackJackConfirm = true;
         }
         else {
             drawPlayerCard();
         }
-        if (playerTotal>21 && dealerTotal<=21 && dealerTotal >= 17){
-            dealerPoints.innerText = dealerTotal; 
-            topText.innerText = "Dealer wins!";
-            enableAgain();
-        }
+        compareHit();
     }
     else if (choice === "buttonAgain"){
         again();
@@ -332,6 +349,8 @@ function again(){
     playerNrOfAces = 0;
     dealerAces = false;
     playerAces = false;
+    blackJackConfirm = false;
+    cardCalcReturn = [];
     messageText.innerText = "Good Luck!";
     topText.innerText = "";
     playerCards.innerHTML = '';
@@ -343,14 +362,6 @@ function again(){
     enableStand();
     enableHit();
 }
-
-
-
-
-
-
-
-
 
 
 
