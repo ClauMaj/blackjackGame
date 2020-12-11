@@ -326,3 +326,13 @@ body{
     color: rgb(151, 150, 150);
 
 }
+#playerWinsElement{
+    padding: 1px 5px 1px 5px;
+    display: inline;
+    color: rgb(151, 150, 150);
+}
+#dealerWinsElement{
+    padding: 1px 5px 1px 5px;
+    display: inline;
+    color: rgb(151, 150, 150);
+}

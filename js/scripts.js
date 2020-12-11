@@ -1,7 +1,7 @@
 
 // create deck:
 var suitsArr = ['diamonds', 'clubs', 'hearts', 'spades'];
-var rankArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]; 
+var rankArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 var deck = []; // stores the deck after created
 
 
@@ -25,6 +25,8 @@ var buttonAgain = document.querySelector('#buttonAgain');
 var topText = document.querySelector('#topText');
 var playerCreditsElement = document.querySelector('#playerCreditsElement');
 var dealerCreditsElement = document.querySelector('#dealerCreditsElement');
+var playerWinsElement = document.querySelector('#playerWinsElement');
+var dealerWinsElement = document.querySelector('#dealerWinsElement');
 
 //assign initial values to tracking variables
 var playerPoints;  // node
@@ -41,6 +43,8 @@ var blackJackConfirm = false;
 var cardCalcReturn = [];
 var playerCredits = 1000;
 var dealerCredits = 1000;
+var playerNrOfWins = 0;
+var dealerNrOfWins = 0;
 
 
 // enable\disable functions for main buttons
@@ -164,6 +168,8 @@ function startSequence(decksText){
     playerCards.innerHTML = '';
     playerCreditsElement.innerText = playerCredits;
     dealerCreditsElement.innerText = dealerCredits;
+    playerWinsElement.innerText = playerNrOfWins;
+    dealerWinsElement.innerText = dealerNrOfWins;
     enableStand();
     enableHit();
     enableAgain();
@@ -299,6 +305,7 @@ function compareStand(){
             topText.innerText = "You win!";
             playerWins()
             if (playerTotal === 21) {
+                playerNrOfWins -= 1; // used to avoid addin 2 wins when player has blackjack
                 playerWins();
             };
         }
@@ -313,6 +320,7 @@ function compareStand(){
         topText.innerText = "You win!";
         playerWins();
         if (playerTotal === 21) {
+            playerNrOfWins -= 1; // used to avoid addin 2 wins when player has blackjack
             playerWins();
         };
     }
@@ -338,10 +346,17 @@ function compareHit(){
 }
 
 // again => is a new game sequence
+//check if enough credits <=> for case when play again was hit before the end of previous round
 // reset tracking variables
 // reset the screen
 // draw 2 cards for player and dealer
 function again(){
+    if (checkCredits() === true){
+        return;
+    }
+    if (topText.innerText === ""){
+        dealerWins();
+    }
     dealerTotal = 0;
     playerTotal = 0;
     dealerNrOfAces = 0;
@@ -369,24 +384,38 @@ function playerWins(){
     dealerCredits -= 30;
     playerCreditsElement.innerText = playerCredits;
     dealerCreditsElement.innerText = dealerCredits;
+    playerNrOfWins += 1;
+    playerWinsElement.innerText = playerNrOfWins;
+    enableAgain(); // default - enable again button
+    checkCredits(); //check if enough credits and disable again if not
 }
 function dealerWins(){
     dealerCredits += 30;
     playerCredits -= 30;
     playerCreditsElement.innerText = playerCredits;
     dealerCreditsElement.innerText = dealerCredits;
+    dealerNrOfWins += 1;
+    dealerWinsElement.innerText = dealerNrOfWins;
+    enableAgain(); // default - enable again button
+    checkCredits(); //check if enough credits and disable again if not
 }
 
 // checks if both players have enough credits for a new round
 // called after winner is declared and points processed
 function checkCredits(){
     if (playerCredits < 60) {
-        messageText.innerText = "You are out of credit :( ...Restart the game if you wish to play again!";
+        messageText.innerText = "Not enough credit :( ...Restart the game!";
         disableAgain();
+        disableHit();
+        disableStand();
+        return true;
     }
     else if (dealerCredits < 60){
-        messageText.innerText = "Congratulations!!! ...You won all off the dealer's credits!Restart the game if you wish to play again!";
+        messageText.innerText = "Congratulations!!! ...Dealer not enough credits!Restart the game!";
         disableAgain();
+        disableHit();
+        disableStand();
+        return true;
     }
 }
 
@@ -423,8 +452,6 @@ mainButtons.addEventListener('click',function(e){
         drawDealerCard();
         }
         compareStand();
-        enableAgain();
-        checkCredits()
     }
     else if (choice === "buttonHit"){
         if (playerTotal === 21 && blackJackConfirm ===false){
@@ -435,7 +462,6 @@ mainButtons.addEventListener('click',function(e){
             drawPlayerCard();
         }
         compareHit();
-        checkCredits()
     }
     else if (choice === "buttonAgain"){
         again();
