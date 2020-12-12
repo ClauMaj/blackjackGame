@@ -28,7 +28,7 @@ var dealerCreditsElement = document.querySelector('#dealerCreditsElement');
 var playerWinsElement = document.querySelector('#playerWinsElement');
 var dealerWinsElement = document.querySelector('#dealerWinsElement');
 
-//assign initial values to tracking variables
+//assign initial values for tracking variables and ON/OFF switches
 var playerPoints;  // node
 var dealerPoints;  // node
 var bottomText;  // node
@@ -40,11 +40,14 @@ var playerNrOfAces = 0;
 var dealerAces = false;
 var playerAces = false;
 var blackJackConfirm = false;
+var flipIt = false;
 var cardCalcReturn = [];
 var playerCredits = 1000;
 var dealerCredits = 1000;
 var playerNrOfWins = 0;
 var dealerNrOfWins = 0;
+var backOfCardValue = 0;
+var backOfCardUrl = '';
 
 
 // enable\disable functions for main buttons
@@ -149,11 +152,11 @@ function createText(name,text,idName) {
 //enable play buttons and draw 2 cards for player and dealer
 // this fnct is called after player selects the nr. of decks
 function startSequence(decksText){
-    logo.remove();
     welcome.remove();
     startButton1.remove();
     startButton2.remove();
     startButton3.remove();
+    dealerCards.innerHTML = '';
     messageText.innerText = "Good Luck!";
     bottomText = createText('div',`playing with ${decksText} of cards`,'bottom2');
     table.appendChild(bottomText);
@@ -176,7 +179,8 @@ function startSequence(decksText){
     drawPlayerCard();
     drawDealerCard();
     drawPlayerCard();
-    drawDealerCard();
+    createFlipedCard();
+    flipIt = true;
 }
 
 
@@ -247,9 +251,9 @@ function cardCalc(value,total,element,nrOfAces,aces){
 }
 
 
-//drawPlayerCard => pulls a card from the deck and renders is on the screen
+//drawPlayerCard => pulls a card from the deck and displays it on the screen
 // call cardCalc function to process the value drawn
-// this fnct is called when player presses the Hit button and 2 times during the startSequence()
+// this fnct is called when player presses the Hit button and  during the startSequence()
 function drawPlayerCard(){
     if(deck.length < 1){
         createDeck(suitsArr,rankArr,sizeOfDeck);
@@ -268,17 +272,26 @@ function drawPlayerCard(){
     }
 }
 
-//drawDealerCard => pulls a card from the deck and renders is on the screen
+
+//drawDealerCard => pulls a card from the deck and displays it on the screen
 //call cardCalc function to process the value drawn
-//this fnct is called when player presses the Stand button, when playerPoint > 21 and 2 times during the startSequence()
+//this fnct is called when player presses the Stand button, when playerPoints > 21 and during the start sequence
 function drawDealerCard(){
     if(deck.length < 1){
         createDeck(suitsArr,rankArr,sizeOfDeck);
         messageText.innerText = "A new deck has been created!";
     }
-    let dDrawn = deck.pop();
-    dealerCards.innerHTML += `<img class="cardImg" src="${dDrawn.url}" alt="">`;
-    cardCalcReturn = cardCalc(dDrawn.value,dealerTotal,dealerPoints,dealerNrOfAces,dealerAces);
+    if (flipIt === true){
+        flipCard()
+        dealerCards.innerHTML += `<img class="cardImg" src="${backOfCardUrl}" alt="">`;
+        cardCalcReturn = cardCalc(backOfCardValue,dealerTotal,dealerPoints,dealerNrOfAces,dealerAces);
+        flipIt = false;
+    }
+    else {
+        let dDrawn = deck.pop();
+        dealerCards.innerHTML += `<img class="cardImg" src="${dDrawn.url}" alt="">`;
+        cardCalcReturn = cardCalc(dDrawn.value,dealerTotal,dealerPoints,dealerNrOfAces,dealerAces);
+    }
     dealerTotal = cardCalcReturn[0];
     dealerNrOfAces = cardCalcReturn[1];
     dealerAces = cardCalcReturn[2];
@@ -289,6 +302,27 @@ function drawDealerCard(){
     }
 }
 
+//function to create a fliped card:
+//  draw a card from the deck
+// store the atributes of the card
+// show the backOfCard image instead of the real URL
+function createFlipedCard(){
+    if(deck.length < 1){
+        createDeck(suitsArr,rankArr,sizeOfDeck);
+        messageText.innerText = "A new deck has been created!";
+    }
+    let flipDrawn = deck.pop();
+    backOfCardValue = flipDrawn.value;
+    backOfCardUrl = flipDrawn.url;
+    dealerCards.innerHTML += `<img class="cardImg" src="images/back.png" alt="">`;
+}
+
+// remove the back of card img from the screen
+// when dealer's turn to draw
+function flipCard(){
+    let toRemove = dealerCards.childNodes[1];
+    toRemove.parentNode.removeChild(toRemove);
+}
 
 // compareStand => compares scores when player hits Stand button, after the dealer has finished drawin cards too
 // this fnct is called when player hits Stand button
@@ -313,6 +347,7 @@ function compareStand(){
             dealerPoints.innerText = dealerTotal; 
             messageText.innerText = "Draw!!!";
             topText.innerText = "Draw!";
+            enableAgain();
         }
     }
     if (dealerTotal > 21){
@@ -339,7 +374,6 @@ function compareHit(){
             }
         dealerPoints.innerText = dealerTotal;
         topText.innerText = "Dealer wins!";
-        console.log(playerCredits);
         dealerWins();    
         enableAgain();
     }
@@ -361,9 +395,12 @@ function again(){
     playerTotal = 0;
     dealerNrOfAces = 0;
     playerNrOfAces = 0;
+    backOfCardValue = 0;
+    backOfCardUrl = 0;
     dealerAces = false;
     playerAces = false;
     blackJackConfirm = false;
+    flipIt = false;
     cardCalcReturn = [];
     messageText.innerText = "Good Luck!";
     topText.innerText = "";
@@ -372,7 +409,8 @@ function again(){
     drawPlayerCard();
     drawDealerCard();
     drawPlayerCard();
-    drawDealerCard();
+    createFlipedCard();
+    flipIt = true;
     enableStand();
     enableHit();
 }
@@ -387,7 +425,7 @@ function playerWins(){
     playerNrOfWins += 1;
     playerWinsElement.innerText = playerNrOfWins;
     enableAgain(); // default - enable again button
-    checkCredits(); //check if enough credits and disable again if not
+    checkCredits(); //check if players have enough credits => disable again if not
 }
 function dealerWins(){
     dealerCredits += 30;
@@ -423,10 +461,9 @@ function checkCredits(){
 messageText.addEventListener('click',function(e){
     let select = e.target.id;
     let decksText = e.target.innerText;
-    console.log(e);
     // select deck and start the game
     start(select,decksText);
-    console.log(deck);
+    messageText.removeEventListener('click', arguments.callee);
 });
 
 //restart the entire game (reload page)
@@ -436,12 +473,14 @@ restart.addEventListener('click',function(e){
     }
 });
 
+console.time(start);
+console.timeEnd(start);
+
 //main listener for stand, hit and playAgain buttons
 // if Stand is pressed call drawDealerCard() untill dealer >=17
 // if Hit is pressed check if the score is 21 and ask for confirmation then drawPlayerCard()
 // if Play again is pressed => again() is called and a new game begins
 mainButtons.addEventListener('click',function(e){
-    console.log(e);
     let choice = e.target.id;
     if (choice === "buttonStand"){
         playerPoints.innerText = playerTotal;

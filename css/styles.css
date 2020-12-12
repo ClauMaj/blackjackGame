@@ -177,20 +177,8 @@ body{
     text-shadow: 2px 2px 5px black;
     cursor: pointer;
 }
-#dealerText{
-    color: #370617;
-    font-weight: bold;
-    position: absolute;
-    top: 32%;
-    height: 4%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1vw;
-}
 #messageText{
-    color: rgb(204, 235, 67);
+    color: rgb(167, 204, 0);
     font-weight: bold;
     position: absolute;
     top: 36%;
@@ -200,7 +188,25 @@ body{
     justify-content: center;
     align-items: center;
     font-size: 1.3vw;
+    text-shadow: 2px 2px 5px black;
+    z-index: 20;
 }
+#shadowDiv{
+    position: absolute;
+    top: 36%;
+    height: 8%;
+    width: 100%;
+    background-color: #051419;
+    opacity: 40%;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: gray;
+    box-shadow: inset 0 0 10px rgba(32, 27, 27, 0.5), 0 0 20px rgba(15, 14, 14, 0.2);
+    text-shadow: 2px 2px 5px black;
+    border-radius: 8%;
+    z-index: 10;
+}
+
 #topText{
     color: gold;
     font-weight: bold;
@@ -226,6 +232,18 @@ body{
     align-items: center;
     font-size: 1vw;
 }
+#dealerText{
+    color: #370617;
+    font-weight: bold;
+    position: absolute;
+    top: 32%;
+    height: 4%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1vw;
+}
 #bottom1{
     position: absolute;
     top: 90%;
@@ -240,8 +258,8 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1vw;
-    color: rgb(146, 145, 145);
+    font-size: 0.8vw;
+    color: rgb(173, 173, 173);
 }
 .buttonStart{
     width: 8%;
@@ -256,7 +274,7 @@ body{
     color: #cac9c9;
     font-size: 0.7vw;
     font-weight: bold;
-    border-radius: 50%;
+    border-radius: 30%;
 }
 .buttonStart:hover {
     border: 1px solid;
@@ -274,20 +292,20 @@ body{
 #dealerPoints{
     margin-left: 10px;
     color: lightgray;
+    border: 1px solid rgb(3, 87, 17);
+    padding: 0px 5px 0px 5px;
+    box-shadow: 1px 1px 2px black;
+    font-size: 1.1vw;
+    background-color: #163103;
 }
 #playerPoints{
     margin-left: 10px;
     color: lightgray;
-}
-#playerPoints{
     border: 1px solid rgb(3, 87, 17);
-    padding: 1px 5px 1px 5px;
+    padding: 0px 5px 0px 5px;
     box-shadow: 1px 1px 2px black;
-}
-#dealerPoints{
-    border: 1px solid rgb(3, 87, 17);
-    padding: 1px 5px 1px 5px;
-    box-shadow: 1px 1px 2px black;
+    font-size: 1.1vw;
+    background-color: #163103;
 }
 #pointsText{
     color: darkgrey;
@@ -324,6 +342,7 @@ body{
     bottom: 0;
     right: 0;
     color: rgb(151, 150, 150);
+    font-size: 0.8vw;
 
 }
 #playerWinsElement{
