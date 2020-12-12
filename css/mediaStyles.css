@@ -10,9 +10,8 @@
     }
     .cardImg{
         margin: 5px;
-        height: 70%;
+        height: 85%;
         width: auto;
-        animation: imageMove 15s linear 1;
     }
     #buttonHit{
         width: 22%;
