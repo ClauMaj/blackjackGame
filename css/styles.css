@@ -20,10 +20,6 @@ body{
     0% {background-position: left}
     100% {background-position: right}
 }
-@keyframes imageMove{
-    from { top: 0; left: 0; }
-    to   { top: 100px; left: 100px; }
-}
 #tableDiv{
     position: relative;
     width: 60%;
@@ -53,7 +49,7 @@ body{
     margin: 5px;
     height: 90%;
     width: auto;
-    animation: imageMove 15s linear 1;
+    margin-left: 10vw;
 }
 #playerCards{
     position: absolute;
