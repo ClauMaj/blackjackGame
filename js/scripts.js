@@ -473,9 +473,6 @@ restart.addEventListener('click',function(e){
     }
 });
 
-console.time(start);
-console.timeEnd(start);
-
 //main listener for stand, hit and playAgain buttons
 // if Stand is pressed call drawDealerCard() untill dealer >=17
 // if Hit is pressed check if the score is 21 and ask for confirmation then drawPlayerCard()
