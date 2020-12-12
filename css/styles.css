@@ -20,6 +20,10 @@ body{
     0% {background-position: left}
     100% {background-position: right}
 }
+@keyframes imageMove{
+    from { top: 0; left: 0; }
+    to   { top: 100px; left: 100px; }
+}
 #tableDiv{
     position: relative;
     width: 60%;
@@ -49,6 +53,7 @@ body{
     margin: 5px;
     height: 90%;
     width: auto;
+    animation: imageMove 15s linear 1;
 }
 #playerCards{
     position: absolute;
@@ -221,7 +226,6 @@ body{
 }
 #playerText{
     color: #370617;
-    font-size: 0.8vw;
     font-weight: bold;
     position: absolute;
     top: 44%;
@@ -343,7 +347,6 @@ body{
     right: 0;
     color: rgb(151, 150, 150);
     font-size: 0.8vw;
-
 }
 #playerWinsElement{
     padding: 1px 5px 1px 5px;
@@ -355,3 +358,4 @@ body{
     display: inline;
     color: rgb(151, 150, 150);
 }
+

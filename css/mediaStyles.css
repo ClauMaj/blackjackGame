@@ -1,0 +1,191 @@
+@media screen and (max-width: 1025px){
+    #tableDiv{
+        position: relative;
+        width: 100%;
+        height: auto;
+        background-image: url("../images/table.jpg");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        z-index:15;
+    }
+    .cardImg{
+        margin: 5px;
+        height: 70%;
+        width: auto;
+        animation: imageMove 15s linear 1;
+    }
+    #buttonHit{
+        width: 22%;
+        height: 30%;
+        background: radial-gradient(#3C860B, black);
+        margin: 10px 20px 10px 20px;
+        border: none;
+        box-shadow: 5px 10px 8px black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #cac9c9;
+        font-size: 2vw;
+        font-weight: bold;
+    }
+    #buttonStand{
+        width: 22%;
+        height: 30%;
+        background: radial-gradient(#AB3717, black);
+        margin: 10px 20px 10px 20px;
+        border: none;
+        box-shadow: 5px 10px 8px black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #cac9c9;
+        font-size: 2vw;
+        font-weight: bold;
+    }
+    #buttonAgain{
+        width: 22%;
+        height: 30%;
+        background: radial-gradient(#6b6b6b, black);
+        margin: 10px 20px 10px 20px;
+        border: none;
+        box-shadow: 5px 10px 8px black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #cac9c9;
+        font-size: 2vw;
+        font-weight: bold;
+    }
+    #buttonRestart{
+        width: 25%;
+        height: 50%;
+        background: radial-gradient(#3C860B, black);
+        margin: 10px 20px 10px 20px;
+        border: none;
+        box-shadow: 5px 10px 8px black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #cac9c9;
+        font-size: 2vw;
+    }
+    #messageText{
+        color: rgb(167, 204, 0);
+        font-weight: bold;
+        position: absolute;
+        top: 36%;
+        height: 8%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 5vw;
+        text-shadow: 2px 2px 5px black;
+        z-index: 20;
+    }
+    #topText{
+        color: gold;
+        font-weight: bold;
+        position: absolute;
+        top: 6%;
+        height: 6%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 6vw;
+    }
+    #playerText{
+        color: #370617;
+        font-size: 4vw;
+        font-weight: bold;
+        position: absolute;
+        top: 44%;
+        height: 4%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #dealerText{
+        color: #370617;
+        font-weight: bold;
+        position: absolute;
+        top: 32%;
+        height: 4%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 4vw;
+    }
+    #bottom2{
+        position: absolute;
+        top: 95%;
+        height: 5%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2.5vw;
+        color: rgb(173, 173, 173);
+    }
+    .buttonStart{
+        width: 17%;
+        height: 30%;
+        background: radial-gradient(rgb(163, 1, 1), black);
+        margin: 10px 20px 10px 20px;
+        border: none;
+        box-shadow: 5px 10px 8px black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #cac9c9;
+        font-size: 2.5vw;
+        font-weight: bold;
+        border-radius: 30%;
+    }
+    #welcome{
+        text-align: center;
+        font-size: 3vw;
+        color: rgb(204, 235, 67);
+    }
+    #dealerPoints{
+        margin-left: 10px;
+        color: lightgray;
+        border: 1px solid rgb(3, 87, 17);
+        padding: 0px 5px 0px 5px;
+        box-shadow: 1px 1px 2px black;
+        font-size: 3vw;
+        background-color: #163103;
+    }
+    #playerPoints{
+        margin-left: 10px;
+        color: lightgray;
+        border: 1px solid rgb(3, 87, 17);
+        padding: 0px 5px 0px 5px;
+        box-shadow: 1px 1px 2px black;
+        font-size: 3vw;
+        background-color: #163103;
+    }
+    #pointsText{
+        color: darkgrey;
+        font-size: 0.8vw;
+        font-weight: bold;
+        position: absolute;
+        top: 2%;
+        height: 6%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 3.5vw;
+    }
+    #bet{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        color: rgb(151, 150, 150);
+        font-size: 1.3vw;
+    }
+}
