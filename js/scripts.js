@@ -175,7 +175,6 @@ function startSequence(decksText){
     dealerWinsElement.innerText = dealerNrOfWins;
     enableStand();
     enableHit();
-    enableAgain();
     drawPlayerCard();
     drawDealerCard();
     drawPlayerCard();
@@ -387,9 +386,7 @@ function again(){
     if (checkCredits() === true){
         return;
     }
-    if (topText.innerText === ""){
-        dealerWins();
-    }
+    disableAgain();
     dealerTotal = 0;
     playerTotal = 0;
     dealerNrOfAces = 0;
