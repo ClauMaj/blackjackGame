@@ -12,14 +12,14 @@ body{
     height: 100vh;
     background: linear-gradient(45deg,#051419,black,#05161C,#05181F,black,#051A22,#051D25,#052029,black,#06232D,#072631,black);
     background-size: 800% 800%;
-    animation: bodybg 15s linear infinite;
-    animation-direction: alternate;
+    /* animation: bodybg 15s linear infinite;
+    animation-direction: alternate; */
     font-family:  'Roboto', sans-serif;
 }
-@keyframes bodybg {
+/* @keyframes bodybg {
     0% {background-position: left}
     100% {background-position: right}
-}
+} */
 #tableDiv{
     position: relative;
     width: 60%;
@@ -33,7 +33,7 @@ body{
     position: absolute;
     width: 100vw;
     height: 100vh;
-    opacity: 3%;
+    opacity: 8%;
     z-index: 10;
 }
 #dealerCards{
