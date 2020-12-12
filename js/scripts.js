@@ -267,7 +267,6 @@ function drawPlayerCard(){
     playerAces = cardCalcReturn[2];
     cardCalcReturn = [];
     if (playerTotal === 21){
-        playerPoints.innerText = playerTotal;
         messageText.innerText = "Blackjack";
     }
 }
