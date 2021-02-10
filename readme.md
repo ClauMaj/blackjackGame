@@ -22,7 +22,7 @@
 
 ### Some interesting functions used:
 
-- I consider the cardCalc() function(on line 195 in sripts.js) the main engine of the game where the new drawn cards are calculated and the dcision of what to render on the sccreen is made.
+- I consider the cardCalc() function(on line 195 in sripts.js) the main engine of the game where the new drawn cards are calculated and the decision of what to render on the screen is made.
 - Deck shuffling:
 
 ```javascript
