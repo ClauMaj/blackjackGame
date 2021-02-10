@@ -73,4 +73,4 @@ welcome.remove();
 ```
 
 
-![Image of Blackjack](images/snipp.png)
+![blackjack demo](images/snipp.png)
