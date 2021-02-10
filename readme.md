@@ -73,3 +73,4 @@ welcome.remove();
 ```
 
 
+![Image of Blackjack](images/snipp.png)
