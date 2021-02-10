@@ -112,6 +112,7 @@ function createDeck(suitsArr,rankArr,n){
             else if (rankArr[i] > 10) {
                 card = {value: 10, rank: rankArr[i], suit: suitsArr[j], url: `images/${rankArr[i]}_of_${suitsArr[j]}.png`}
             }
+// k is the nr of decks selected by the player
             for (let k = 0; k < n; k++){
                 deck.push(card);
             }
